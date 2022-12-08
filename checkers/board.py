@@ -241,9 +241,11 @@ class Board:
         i = piece_y
         j = piece_x
         while (True): # ЛевоВерх
-            if (i < 0 or j < 0 or self.board[i][j] != 0 and self.board[i][j].color == WHITE and moves[(i+1, j+1)].color == WHITE):
+            if (i > 7 or j < 0 or j >= 9 or i < 0):
                 break
-            if self.board[i][j] == 0 or self.board[i][j].color == WHITE:
+            if (self.board[i][j] != 0 and self.board[i-1][j-1] != 0):
+                break
+            if self.board[i][j] == 0:
                 moves[(i, j)] = self.board[i][j]
             i -= 1
             j -= 1
@@ -251,9 +253,11 @@ class Board:
         i = piece_y
         j = piece_x
         while (True): #ПравоВерх
-            if (i < 0 or j > 9 or self.board[i][j] != 0  and self.board[i][j].color == WHITE and moves[(i+1, j-1)].color == WHITE):
+            if (i > 7 or j <= 0 or j > 9 or i <= 0):
                 break
-            if self.board[i][j] == 0 or self.board[i][j].color == WHITE:
+            if (self.board[i][j] != 0  and self.board[i+1][j-1] != 0):
+                break
+            if self.board[i][j] == 0:
                 moves[(i, j)] = self.board[i][j]
             i -= 1
             j += 1
@@ -262,9 +266,11 @@ class Board:
         i = piece_y
         j = piece_x
         while (True): #ЛевоНиз
-            if (i > 7 or j < 0 or self.board[i][j] != 0 and self.board[i][j].color == WHITE and moves[(i-1, j+1)].color == WHITE):
+            if (i >= 7 or j <= 0 or j > 9 or i < 0):
                 break
-            if self.board[i][j] == 0 or self.board[i][j].color == WHITE:
+            if (self.board[i][j] != 0 and self.board[i-1][j+1] != 0):
+                break
+            if self.board[i][j] == 0:
                 moves[(i, j)] = self.board[i][j]
             i += 1
             j -= 1
@@ -273,9 +279,11 @@ class Board:
         i = piece_y
         j = piece_x
         while (True): #ПравоНиз
-            if (i > 7 or j > 9 or self.board[i][j] != 0 and self.board[i][j].color == WHITE and moves[(i-1, j-1)].color == WHITE):
+            if (i >= 7 or j <= 0 or j >= 9 or i < 0):
                 break
-            if self.board[i][j] == 0 or self.board[i][j].color == WHITE:
+            if (self.board[i][j] != 0 and self.board[i+1][j+1] != 0):
+                break
+            if self.board[i][j] == 0:
                 moves[(i, j)] = self.board[i][j]
             i += 1
             j += 1
