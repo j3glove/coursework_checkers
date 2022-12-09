@@ -1,6 +1,6 @@
 import pygame
 from .constants import BLACK, ROWS, RED, SQUARE_SIZE, COLS, WHITE
-from .piece import Piece
+from .piece import *
 
 
 class Board:
@@ -105,11 +105,7 @@ class Board:
             moves.update(self._traverse_left(row + 1, min(row + 3, ROWS), 1, piece.color, left))
             moves.update(self._traverse_right(row + 1, min(row + 3, ROWS), 1, piece.color, right))
         if piece.king:
-            moves.update(self.test_red(piece.col, piece.row))
-            # moves.update(self.king_traverse_left(row + 1, min(row + 3, ROWS), 1, piece.color, left))
-            # moves.update(self.king_traverse_right(row + 1, min(row + 3, ROWS), 1, piece.color, right))
-            # moves.update(self.king_traverse_left(row - 1, max(row - 3, -1), -1, piece.color, left))
-            # moves.update(self.king_traverse_right(row - 1, max(row - 3, -1), -1, piece.color, right))
+            moves.update(self.test_red(piece.col, piece.row, piece))
 
         return moves
 
@@ -179,72 +175,6 @@ class Board:
 
         return moves
 
-    # def king_traverse_left(self, start, stop, step, color, left, skipped=[]):
-    #     moves = {}
-    #     last = []
-    #     for r in range(start, stop, step):
-    #         if left < 0:
-    #             break
-    #
-    #         current = self.board[r][left]
-    #         if current == 0:
-    #             if skipped and not last:
-    #                 break
-    #             elif skipped:
-    #                 moves[(r, left)] = last + skipped
-    #             else:
-    #                 moves[(r, left)] = last + last
-    #
-    #             if last:
-    #                 if step == -1:
-    #                     row = max(r - 3, -1)
-    #                 else:
-    #                     row = min(r + 3, ROWS)
-    #                 moves.update(self._traverse_left(r + step, row, step, color, left - 1, skipped=last))
-    #                 moves.update(self._traverse_left(r + step, row, step, color, left + 1, skipped=last))
-    #             break
-    #         elif current.color == color:
-    #             break
-    #         else:
-    #             last = [current]
-    #
-    #         left -= 1
-    #
-    #     return moves
-    #
-    # def king_traverse_right(self, start, stop, step, color, right, skipped=[]):
-    #     moves = {}
-    #     last = []
-    #     for r in range(start, stop, step):
-    #         if right >= COLS:
-    #             break
-    #
-    #         current = self.board[r][right]
-    #         if current == 0:
-    #             if skipped and not last:
-    #                 break
-    #             elif skipped:
-    #                 moves[(r, right)] = last + skipped
-    #             else:
-    #                 moves[(r, right)] = last + last
-    #
-    #             if last:
-    #                 if step == -1:
-    #                     row = max(r - 3, -1)
-    #                 else:
-    #                     row = min(r + 3, ROWS)
-    #                 moves.update(self._traverse_right(r + step, row, step, color, right - 1, skipped=last))
-    #                 moves.update(self._traverse_right(r + step, row, step, color, right + 1, skipped=last))
-    #             break
-    #         elif current.color == color:
-    #             break
-    #         else:
-    #             last = [current]
-    #
-    #         right += 1
-    #
-    #     return moves
-
     # def test_red(self, piece_x, piece_y):
     #     moves = {}
     #     i = piece_y
@@ -297,8 +227,13 @@ class Board:
     #
     #     return moves
 
-    def test_red(self, piece_x, piece_y):
+    def test_red(self, piece_x, piece_y, piece):
         moves = {}
+        # left = piece.col - 1
+        # right = piece.col + 1
+        # row = piece.row
+        # last = []
+        curcolor = self.get_figure_at(piece_x, piece_y).color
         y = piece_y
         x = piece_x
         dx = 0
@@ -309,7 +244,11 @@ class Board:
             if self.get_figure_at(x + dx, y + dy) == 0:
                 moves[(y + dy, x + dx)] = self.get_figure_at(x + dx, y + dy)
             else:
-                break
+                if self.get_figure_at(x + dx + 1, y + dy + 1) != 0 or curcolor == self.get_figure_at(x + dx, y + dy).color:
+                    break
+                if self.get_figure_at(x + dx, y + dy) != 0 and curcolor != self.get_figure_at(x + dx,y + dy).color:
+                    pass
+
 
         dx = 0
         dy = 0
@@ -319,7 +258,11 @@ class Board:
             if self.get_figure_at(x + dx, y + dy) == 0:
                 moves[(y + dy, x + dx)] = self.get_figure_at(x + dx, y + dy)
             else:
-                break
+                if self.get_figure_at(x + dx - 1, y + dy + 1) != 0 or curcolor == self.get_figure_at(x + dx, y + dy).color:
+                    break
+                if self.get_figure_at(x + dx, y + dy) != 0 and curcolor != self.get_figure_at(x + dx,y + dy).color:
+                    pass
+
 
         dx = 0
         dy = 0
@@ -329,7 +272,12 @@ class Board:
             if self.get_figure_at(x + dx, y + dy) == 0:
                 moves[(y + dy, x + dx)] = self.get_figure_at(x + dx, y + dy)
             else:
-                break
+                if self.get_figure_at(x + dx + 1, y + dy - 1) != 0 or curcolor == self.get_figure_at(x + dx, y + dy).color:
+                    break
+                if self.get_figure_at(x + dx, y + dy) != 0 and curcolor != self.get_figure_at(x + dx, y + dy).color:
+                    pass
+
+
 
         dx = 0
         dy = 0
@@ -339,6 +287,10 @@ class Board:
             if self.get_figure_at(x + dx, y + dy) == 0:
                 moves[(y + dy, x + dx)] = self.get_figure_at(x + dx, y + dy)
             else:
-                break
+                if self.get_figure_at(x + dx - 1, y + dy - 1) != 0 or curcolor == self.get_figure_at(x + dx, y + dy).color:
+                    break
+                if self.get_figure_at(x + dx, y + dy) != 0  and curcolor != self.get_figure_at(x + dx,y + dy).color:
+                    pass
+
 
         return moves
