@@ -53,8 +53,7 @@ class Board:
                 if piece != 0:
                     piece.draw(win)
 
-    def remove(self, pieces):
-        for piece in pieces:
+    def remove(self, piece):
             self.board[piece.row][piece.col] = 0
             if piece != 0:
                 if piece.color == RED:
@@ -82,157 +81,97 @@ class Board:
 
     def get_valid_moves(self, piece):
         moves = {}
-        left = piece.col - 1
-        right = piece.col + 1
-        row = piece.row
 
         if piece.color == RED:
             for i in range(piece.col - 1, piece.col + 2, 2):
                 if i >= 0 and i < COLS and self.board[piece.row + 1][i] != 0 and self.board[piece.row + 1][i].color == WHITE:
                     if i > piece.col:
-                        moves.update(self._traverse_right(row + 1, min(row + 3, ROWS), 1, piece.color, right))
+                        moves.update(self.check_pos(piece.col, piece.row, piece))
                     else:
-                        moves.update(self._traverse_left(row + 1, min(row + 3, ROWS), 1, piece.color, left))
-            moves.update(self._traverse_left(row - 1, max(row - 3, -1), -1, piece.color, left))
-            moves.update(self._traverse_right(row - 1, max(row - 3, -1), -1, piece.color, right))
+                        moves.update(self.check_pos(piece.col, piece.row, piece))
+            moves.update(self.check_pos(piece.col, piece.row, piece))
         if piece.color == WHITE:
             for i in range(piece.col - 1, piece.col + 2, 2):
                 if i >= 0 and i < COLS and self.board[piece.row - 1][i] != 0 and self.board[piece.row - 1][i].color == RED:
                     if i > piece.col:
-                        moves.update(self._traverse_right(row - 1, max(row - 3, -1), -1, piece.color, right))
+                        moves.update(self.check_pos(piece.col, piece.row, piece))
                     else:
-                        moves.update(self._traverse_left(row - 1, max(row - 3, -1), -1, piece.color, left))
-            moves.update(self._traverse_left(row + 1, min(row + 3, ROWS), 1, piece.color, left))
-            moves.update(self._traverse_right(row + 1, min(row + 3, ROWS), 1, piece.color, right))
+                        moves.update(self.check_pos(piece.col, piece.row, piece))
+            moves.update(self.check_pos(piece.col, piece.row, piece))
         if piece.king:
-            moves.update(self.test_red(piece.col, piece.row, piece))
+            moves.update(self.test_red(piece.col, piece.row))
 
         return moves
 
-    def _traverse_left(self, start, stop, step, color, left, skipped=[]):
+    def check_pos(self, piece_x, piece_y, piece):
         moves = {}
-        last = []
-        for r in range(start, stop, step):
-            if left < 0:
-                break
-
-            current = self.board[r][left]
-            if current == 0:
-                if skipped and not last:
+        curcolor = self.get_figure_at(piece_x, piece_y).color
+        y = piece_y
+        x = piece_x
+        if curcolor == WHITE or piece.king or (curcolor == RED and self.get_figure_at(x + 1, y + 1) == WHITE):
+            dx = 0
+            dy = 0
+            while True:
+                dx += 1
+                dy += 1
+                if self.get_figure_at(x + dx, y + dy) == 0:
+                    moves[(y + dy, x + dx)] = self.get_figure_at(x + dx, y + dy)
                     break
-                elif skipped:
-                    moves[(r, left)] = last + skipped
                 else:
-                    moves[(r, left)] = last
+                    if self.get_figure_at(x + dx + 1, y + dy + 1) != 0 or curcolor == self.get_figure_at(x + dx, y + dy).color:
+                        break
+                    if self.get_figure_at(x + dx, y + dy) != 0 and curcolor != self.get_figure_at(x + dx,y + dy).color and self.get_figure_at(x + dx + 1, y + dy + 1) == 0:
+                        moves[(y + dy + 1, x + dx + 1)] = self.get_figure_at(x + dx + 1, y + dy + 1)
 
-                if last:
-                    if step == -1:
-                        row = max(r - 3, -1)
-                    else:
-                        row = min(r + 3, ROWS)
-                    moves.update(self._traverse_left(r + step, row, step, color, left - 1, skipped=last))
-                    moves.update(self._traverse_left(r + step, row, step, color, left + 1, skipped=last))
-                break
-            elif current.color == color:
-                break
-            else:
-                last = [current]
-
-            left -= 1
-
-        return moves
-
-    def _traverse_right(self, start, stop, step, color, right, skipped=[]):
-        moves = {}
-        last = []
-        for r in range(start, stop, step):
-            if right >= COLS:
-                break
-
-            current = self.board[r][right]
-            if current == 0:
-                if skipped and not last:
+        if curcolor == WHITE or piece.king or (curcolor == RED and self.get_figure_at(x - 1, y + 1) == WHITE):
+            dx = 0
+            dy = 0
+            while True:
+                dx -= 1
+                dy += 1
+                if self.get_figure_at(x + dx, y + dy) == 0:
+                    moves[(y + dy, x + dx)] = self.get_figure_at(x + dx, y + dy)
                     break
-                elif skipped:
-                    moves[(r, right)] = last + skipped
                 else:
-                    moves[(r, right)] = last
+                    if self.get_figure_at(x + dx - 1, y + dy + 1) != 0 or curcolor == self.get_figure_at(x + dx, y + dy).color:
+                        break
+                    if self.get_figure_at(x + dx, y + dy) != 0 and curcolor != self.get_figure_at(x + dx,y + dy).color and self.get_figure_at(x + dx - 1, y + dy + 1) == 0:
+                        moves[(y + dy + 1, x + dx - 1)] = self.get_figure_at(x + dx - 1, y + dy + 1)
 
-                if last:
-                    if step == -1:
-                        row = max(r - 3, -1)
-                    else:
-                        row = min(r + 3, ROWS)
-                    moves.update(self._traverse_right(r + step, row, step, color, right - 1, skipped=last))
-                    moves.update(self._traverse_right(r + step, row, step, color, right + 1, skipped=last))
-                break
-            elif current.color == color:
-                break
-            else:
-                last = [current]
+        if curcolor == RED or piece.king or (curcolor == WHITE and self.get_figure_at(x + 1, y - 1) == RED):
+            dx = 0
+            dy = 0
+            while True:
+                dx += 1
+                dy -= 1
+                if self.get_figure_at(x + dx, y + dy) == 0:
+                    moves[(y + dy, x + dx)] = self.get_figure_at(x + dx, y + dy)
+                    break
+                else:
+                    if self.get_figure_at(x + dx + 1, y + dy - 1) != 0 or curcolor == self.get_figure_at(x + dx, y + dy).color:
+                        break
+                    if self.get_figure_at(x + dx, y + dy) != 0 and curcolor != self.get_figure_at(x + dx, y + dy).color and self.get_figure_at(x + dx + 1, y + dy - 1) == 0:
+                        moves[(y + dy - 1, x + dx + 1)] = self.get_figure_at(x + dx + 1, y + dy - 1)
 
-            right += 1
+        if curcolor == RED or piece.king or (curcolor == WHITE and self.get_figure_at(x - 1, y - 1) == RED):
+            dx = 0
+            dy = 0
+            while True:
+                dx -= 1
+                dy -= 1
+                if self.get_figure_at(x + dx, y + dy) == 0:
+                    moves[(y + dy, x + dx)] = self.get_figure_at(x + dx, y + dy)
+                    break
+                else:
+                    if self.get_figure_at(x + dx - 1, y + dy - 1) != 0 or curcolor == self.get_figure_at(x + dx, y + dy).color:
+                        break
+                    if self.get_figure_at(x + dx, y + dy) != 0  and curcolor != self.get_figure_at(x + dx,y + dy).color and self.get_figure_at(x + dx - 1, y + dy - 1) == 0:
+                        moves[(y + dy - 1, x + dx - 1)] = self.get_figure_at(x + dx - 1, y + dy - 1)
 
         return moves
 
-    # def test_red(self, piece_x, piece_y):
-    #     moves = {}
-    #     i = piece_y
-    #     j = piece_x
-    #     while (True):  # ЛевоВерх
-    #         if self.is_valid_coordinates(j, i):
-    #             break
-    #         if (self.board[i][j] != 0 and self.board[i - 1][j - 1] != 0):
-    #             break
-    #         if self.board[i][j] == 0:
-    #             moves[(i, j)] = self.board[i][j]
-    #         i -= 1
-    #         j -= 1
-    #
-    #     i = piece_y
-    #     j = piece_x
-    #     while (True):  # ПравоВерх
-    #         if self.is_valid_coordinates(j, i):
-    #             break
-    #         if (self.board[i][j] != 0 and self.board[i - 1][j + 1] != 0):
-    #             break
-    #         if self.board[i][j] == 0:
-    #             moves[(i, j)] = self.board[i][j]
-    #         i -= 1
-    #         j += 1
-    #
-    #     i = piece_y
-    #     j = piece_x
-    #     while (True):  # ЛевоНиз
-    #         if self.is_valid_coordinates(j, i):
-    #             break
-    #         if (self.board[i][j] != 0 and self.board[i + 1][j - 1] != 0):
-    #             break
-    #         if self.board[i][j] == 0:
-    #             moves[(i, j)] = self.board[i][j]
-    #         i += 1
-    #         j -= 1
-    #
-    #     i = piece_y
-    #     j = piece_x
-    #     while (True):  # ПравоНиз
-    #         if self.is_valid_coordinates(j, i):
-    #             break
-    #         if (self.board[i][j] != 0 and self.board[i + 1][j + 1] != 0):
-    #             break
-    #         if self.board[i][j] == 0:
-    #             moves[(i, j)] = self.board[i][j]
-    #         i += 1
-    #         j += 1
-    #
-    #     return moves
-
-    def test_red(self, piece_x, piece_y, piece):
+    def test_red(self, piece_x, piece_y):
         moves = {}
-        # left = piece.col - 1
-        # right = piece.col + 1
-        # row = piece.row
-        # last = []
         curcolor = self.get_figure_at(piece_x, piece_y).color
         y = piece_y
         x = piece_x
