@@ -78,35 +78,13 @@ class Board:
             return -1
         return self.board[piece_y][piece_x]
 
-    # def can_eat(self, piece_x, piece_y):
-
 
     def get_valid_moves(self, piece):
         moves = {}
-        if piece.color == RED:
-            if self.get_figure_at(piece.row + 1, piece.col -1 ) != 0 and self.get_figure_at(piece.row + 1, piece.col -1 ) != -1:
-                anothercolor = self.get_figure_at(piece.row + 1, piece.col -1).color
-                if WHITE == anothercolor:
-                    moves.update(self.check_pos_left_bottom(piece, piece.col, piece.row))
-
-            if self.get_figure_at(piece.row + 1, piece.col + 1) != 0 and self.get_figure_at(piece.row + 1, piece.col + 1) != -1:
-                anothercolor = self.get_figure_at(piece.row + 1, piece.col + 1).color
-                if WHITE == anothercolor:
-                    moves.update(self.check_pos_right_bottom(piece, piece.col, piece.row))
-            moves.update(self.check_pos_right_upside(piece, piece.col, piece.row))
-            moves.update(self.check_pos_left_upside(piece, piece.col, piece.row))
-
-        if piece.color == WHITE:
-            if self.get_figure_at(piece.row - 1, piece.col - 1) != 0 and self.get_figure_at(piece.row - 1, piece.col - 1) != -1:
-                anothercolor = self.get_figure_at(piece.row - 1, piece.col - 1).color
-                if anothercolor == RED:
-                    moves.update(self.check_pos_left_upside(piece, piece.col, piece.row))
-            if self.get_figure_at(piece.row - 1, piece.col + 1) != 0 and self.get_figure_at(piece.row - 1, piece.col + 1) != -1:
-                anothercolor = self.get_figure_at(piece.row - 1, piece.col + 1).color
-                if anothercolor == RED:
-                    moves.update(self.check_pos_right_upside(piece, piece.col, piece.row))
-            moves.update(self.check_pos_right_bottom(piece, piece.col, piece.row))
-            moves.update(self.check_pos_left_bottom(piece, piece.col, piece.row))
+        moves.update(self.check_pos_right_upside(piece, piece.col, piece.row))
+        moves.update(self.check_pos_left_upside(piece, piece.col, piece.row))
+        moves.update(self.check_pos_left_bottom(piece, piece.col, piece.row))
+        moves.update(self.check_pos_right_bottom(piece, piece.col, piece.row))
 
         if piece.king:
             moves.update(self.test_red(piece.col, piece.row))
@@ -117,91 +95,51 @@ class Board:
         moves = {}
         y = piece_y
         x = piece_x
+        dx = 1
+        dy = 1
+        if self.get_figure_at(x + dx, y + dy) == 0 and piece.color == WHITE:
+            moves[(y + dy, x + dx)] = self.get_figure_at(x + dx, y + dy)
+        if self.get_figure_at(x + dx * 2, y + dy * 2) == 0 and isinstance(self.get_figure_at(x + dx, y + dy), Piece) and self.get_figure_at(x + dx, y + dy).color != piece.color:
+            moves[(y + dy * 2, x + dx * 2)] = self.get_figure_at(x + dx, y + dy)
 
-        dx = 0
-        dy = 0
-        while True:
-            dx += 1
-            dy += 1
-            if self.get_figure_at(x + dx, y + dy) == 0 and piece.color == WHITE:
-                moves[(y + dy, x + dx)] = self.get_figure_at(x + dx, y + dy)
-            if self.get_figure_at(x + dx + dx, y + dy + dy) != 0 or isinstance(self.get_figure_at(x + dx, y + dy), int) or isinstance(self.get_figure_at(x + dx, y + dy), Piece) and piece.color == self.get_figure_at(x + dx, y + dy).color:
-                break
-            if self.get_figure_at(x + dx, y + dy) != 0 and piece.color != self.get_figure_at(x + dx, y + dy).color and self.get_figure_at(x + dx + dx, y + dy + dy) == 0:
-                moves[(y + dy + dy, x + dx + dx)] = self.get_figure_at(x + dx + dx, y + dy + dy)
-            break
         return moves
 
     def check_pos_right_upside(self, piece, piece_x, piece_y):
         moves = {}
         y = piece_y
         x = piece_x
-        dx = 0
-        dy = 0
-        while True:
-            dx += 1
-            dy -= 1
-            if self.get_figure_at(x + dx, y + dy) == 0 and piece.color == RED:
-                moves[(y + dy, x + dx)] = self.get_figure_at(x + dx, y + dy)
-            if self.get_figure_at(x + dx + dx, y + dy + dy) != 0 or isinstance(self.get_figure_at(x + dx, y + dy), int) or isinstance(self.get_figure_at(x + dx, y + dy), Piece) and piece.color == self.get_figure_at(x + dx, y + dy).color:
-                break
-            if self.get_figure_at(x + dx, y + dy) != 0 and piece.color != self.get_figure_at(x + dx, y + dy).color and self.get_figure_at(x + dx + dx, y + dy + dy) == 0:
-                moves[(y + dy + dy, x + dx + dx)] = self.get_figure_at(x + dx + dx, y + dy + dy)
-            break
-
-
+        dx = 1
+        dy = -1
+        if self.get_figure_at(x + dx, y + dy) == 0 and piece.color == RED:
+            moves[(y + dy, x + dx)] = self.get_figure_at(x + dx, y + dy)
+        if self.get_figure_at(x + dx * 2, y + dy * 2) == 0 and isinstance(self.get_figure_at(x + dx, y + dy), Piece) and self.get_figure_at(x + dx, y + dy).color != piece.color:
+            moves[(y + dy * 2, x + dx * 2)] = self.get_figure_at(x + dx, y + dy)
         return moves
 
     def check_pos_left_bottom(self, piece, piece_x, piece_y):
         moves = {}
         y = piece_y
         x = piece_x
-        dx = 0
-        dy = 0
-        while True:
-            dx -= 1
-            dy += 1
-            if self.get_figure_at(x + dx, y + dy) == 0 and piece.color == WHITE:
-                moves[(y + dy, x + dx)] = self.get_figure_at(x + dx, y + dy)
-            if self.get_figure_at(x + dx + dx, y + dy + dy) != 0 or isinstance(self.get_figure_at(x + dx, y + dy),
-                                                                               int) or isinstance(
-                    self.get_figure_at(x + dx, y + dy), Piece) and piece.color == self.get_figure_at(x + dx,
-                                                                                                y + dy).color:
-                break
-            if self.get_figure_at(x + dx, y + dy) != 0 and piece.color != self.get_figure_at(x + dx, y + dy).color and self.get_figure_at(x + dx + dx, y + dy + dy) == 0:
-                moves[(y + dy + dy, x + dx + dx)] = self.get_figure_at(x + dx + dx, y + dy + dy)
-            break
+        dx = -1
+        dy = 1
+        if self.get_figure_at(x + dx, y + dy) == 0 and piece.color == WHITE:
+            moves[(y + dy, x + dx)] = self.get_figure_at(x + dx, y + dy)
+        if self.get_figure_at(x + dx * 2, y + dy * 2) == 0 and isinstance(self.get_figure_at(x + dx, y + dy), Piece) and self.get_figure_at(x + dx, y + dy).color != piece.color:
+            moves[(y + dy * 2, x + dx * 2)] = self.get_figure_at(x + dx, y + dy)
+
         return moves
 
     def check_pos_left_upside(self, piece, piece_x, piece_y):
         moves = {}
         y = piece_y
         x = piece_x
-        dx = 0
-        dy = 0
-        while True:
-            dx -= 1
-            dy -= 1
-            if self.get_figure_at(x + dx, y + dy) == 0 and piece.color == RED:
-                moves[(y + dy, x + dx)] = self.get_figure_at(x + dx, y + dy)
-            if self.get_figure_at(x + dx + dx, y + dy + dy) != 0 or isinstance(self.get_figure_at(x + dx, y + dy),
-                                                                               int) or isinstance(
-                    self.get_figure_at(x + dx, y + dy), Piece) and piece.color == self.get_figure_at(x + dx,
-                                                                                                     y + dy).color:
-                break
-            if self.get_figure_at(x + dx, y + dy) != 0 and piece.color != self.get_figure_at(x + dx, y + dy).color and self.get_figure_at(x + dx + dx, y + dy + dy) == 0:
-                moves[(y + dy + dy, x + dx + dx)] = self.get_figure_at(x + dx + dx, y + dy + dy)
-            break
-
+        dx = -1
+        dy = -1
+        if self.get_figure_at(x + dx, y + dy) == 0 and piece.color == RED:
+            moves[(y + dy, x + dx)] = self.get_figure_at(x + dx, y + dy)
+        if self.get_figure_at(x + dx * 2, y + dy * 2) == 0 and isinstance(self.get_figure_at(x + dx, y + dy), Piece) and self.get_figure_at(x + dx, y + dy).color != piece.color:
+            moves[(y + dy * 2, x + dx * 2)] = self.get_figure_at(x + dx, y + dy)
         return moves
-
-
-
-
-
-
-
-
 
 
     def test_red(self, piece_x, piece_y, ):
@@ -217,9 +155,9 @@ class Board:
             if self.get_figure_at(x + dx, y + dy) == 0:
                 moves[(y + dy, x + dx)] = self.get_figure_at(x + dx, y + dy)
             else:
-                if self.get_figure_at(x + dx + 1, y + dy + 1) != 0 or curcolor == self.get_figure_at(x + dx, y + dy).color:
+                if self.get_figure_at(x + dx * 2, y + dy * 2) != 0 or curcolor == self.get_figure_at(x + dx, y + dy).color:
                     break
-                if self.get_figure_at(x + dx, y + dy) != 0 and curcolor != self.get_figure_at(x + dx,y + dy).color  and self.get_figure_at(x + dx + 1, y + dy + 1) == 0:
+                if self.get_figure_at(x + dx, y + dy) != 0  and curcolor != self.get_figure_at(x + dx,y + dy).color and self.get_figure_at(x + dx * 2, y + dy * 2) == 0:
                     pass
 
 
@@ -231,9 +169,9 @@ class Board:
             if self.get_figure_at(x + dx, y + dy) == 0:
                 moves[(y + dy, x + dx)] = self.get_figure_at(x + dx, y + dy)
             else:
-                if self.get_figure_at(x + dx - 1, y + dy + 1) != 0 or curcolor == self.get_figure_at(x + dx, y + dy).color:
+                if self.get_figure_at(x + dx * 2, y + dy * 2) != 0 or curcolor == self.get_figure_at(x + dx, y + dy).color:
                     break
-                if self.get_figure_at(x + dx, y + dy) != 0 and curcolor != self.get_figure_at(x + dx,y + dy).color and self.get_figure_at(x + dx - 1, y + dy + 1) == 0:
+                if self.get_figure_at(x + dx, y + dy) != 0  and curcolor != self.get_figure_at(x + dx,y + dy).color and self.get_figure_at(x + dx * 2, y + dy * 2) == 0:
                     pass
 
 
@@ -245,9 +183,9 @@ class Board:
             if self.get_figure_at(x + dx, y + dy) == 0:
                 moves[(y + dy, x + dx)] = self.get_figure_at(x + dx, y + dy)
             else:
-                if self.get_figure_at(x + dx + 1, y + dy - 1) != 0 or curcolor == self.get_figure_at(x + dx, y + dy).color:
+                if self.get_figure_at(x + dx * 2, y + dy * 2) != 0 or curcolor == self.get_figure_at(x + dx, y + dy).color:
                     break
-                if self.get_figure_at(x + dx, y + dy) != 0 and curcolor != self.get_figure_at(x + dx, y + dy).color and self.get_figure_at(x + dx + 1, y + dy - 1) == 0:
+                if self.get_figure_at(x + dx, y + dy) != 0  and curcolor != self.get_figure_at(x + dx,y + dy).color and self.get_figure_at(x + dx * 2, y + dy * 2) == 0:
                     pass
 
 
@@ -260,9 +198,9 @@ class Board:
             if self.get_figure_at(x + dx, y + dy) == 0:
                 moves[(y + dy, x + dx)] = self.get_figure_at(x + dx, y + dy)
             else:
-                if self.get_figure_at(x + dx - 1, y + dy - 1) != 0 or curcolor == self.get_figure_at(x + dx, y + dy).color:
+                if self.get_figure_at(x + dx * 2, y + dy * 2) != 0 or curcolor == self.get_figure_at(x + dx, y + dy).color:
                     break
-                if self.get_figure_at(x + dx, y + dy) != 0  and curcolor != self.get_figure_at(x + dx,y + dy).color and self.get_figure_at(x + dx - 1, y + dy - 1) == 0:
+                if self.get_figure_at(x + dx, y + dy) != 0  and curcolor != self.get_figure_at(x + dx,y + dy).color and self.get_figure_at(x + dx * 2, y + dy * 2) == 0:
                     pass
 
 

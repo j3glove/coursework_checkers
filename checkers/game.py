@@ -1,6 +1,6 @@
 import pygame
 from .constants import *
-from .board import *
+from .board import Board
 
 
 class Game:
@@ -25,14 +25,14 @@ class Game:
     def reset(self):
         self._init()
 
-    def select(self, piece_x, piece_y):
+    def select(self, row, col):
         if self.selected:
-            result = self._move(piece_x, piece_y)
+            result = self._move(row, col)
             if not result:
                 self.selected = None
-                self.select(piece_x, piece_y)
+                self.select(row, col)
 
-        piece = self.board.get_piece(piece_x, piece_y)
+        piece = self.board.get_piece(row, col)
         if piece != 0 and piece.color == self.turn:
             self.selected = piece
             self.valid_moves = self.board.get_valid_moves(piece)
