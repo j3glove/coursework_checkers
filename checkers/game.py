@@ -25,14 +25,14 @@ class Game:
     def reset(self):
         self._init()
 
-    def select(self, row, col):
+    def select(self, piece_x, piece_y):
         if self.selected:
-            result = self._move(row, col)
+            result = self._move(piece_x, piece_y)
             if not result:
                 self.selected = None
-                self.select(row, col)
+                self.select(piece_x, piece_y)
 
-        piece = self.board.get_piece(row, col)
+        piece = self.board.get_piece(piece_x, piece_y)
         if piece != 0 and piece.color == self.turn:
             self.selected = piece
             self.valid_moves = self.board.get_valid_moves(piece)
