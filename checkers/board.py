@@ -159,6 +159,13 @@ class Board:
                     break
                 if self.get_figure_at(x + dx, y + dy) != 0 and piece.color != self.get_figure_at(x + dx, y + dy).color and self.get_figure_at(x + dx + king_dx, y + dy + king_dy) == 0:
                     moves[(y + dy + king_dy, x + dx + king_dx)] = self.get_figure_at(x + dx, y + dy)
+                    eated_piece = self.get_figure_at(x + dx, y + dy)
+                    while True:
+                        dx += king_dx
+                        dy += king_dy
+                        if self.get_figure_at(x + dx, y + dy) != 0:
+                            break
+                        moves[(y + dy, x + dx)] = eated_piece
                     break
 
         dx = 0
@@ -175,6 +182,13 @@ class Board:
                     break
                 if self.get_figure_at(x + dx, y + dy) != 0 and piece.color != self.get_figure_at(x + dx, y + dy).color and self.get_figure_at(x + dx + king_dx, y + dy + king_dy) == 0:
                     moves[(y + dy + king_dy, x + dx + king_dx)] = self.get_figure_at(x + dx, y + dy)
+                    eated_piece = self.get_figure_at(x + dx, y + dy)
+                    while True:
+                        dx += king_dx
+                        dy += king_dy
+                        if self.get_figure_at(x + dx, y + dy) != 0:
+                            break
+                        moves[(y + dy, x + dx)] = eated_piece
                     break
 
         dx = 0
@@ -191,9 +205,14 @@ class Board:
                     break
                 if self.get_figure_at(x + dx, y + dy) != 0 and piece.color != self.get_figure_at(x + dx, y + dy).color and self.get_figure_at(x + dx + king_dx, y + dy + king_dy) == 0:
                     moves[(y + dy + king_dy, x + dx + king_dx)] = self.get_figure_at(x + dx, y + dy)
+                    eated_piece = self.get_figure_at(x + dx, y + dy)
+                    while True:
+                        dx += king_dx
+                        dy += king_dy
+                        if self.get_figure_at(x + dx, y + dy) != 0:
+                            break
+                        moves[(y + dy, x + dx)] = eated_piece
                     break
-
-
 
         dx = 0
         dy = 0
@@ -209,6 +228,13 @@ class Board:
                     break
                 if self.get_figure_at(x + dx, y + dy) != 0 and piece.color != self.get_figure_at(x + dx, y + dy).color and self.get_figure_at(x + dx + king_dx, y + dy + king_dy) == 0:
                     moves[(y + dy + king_dy, x + dx + king_dx)] = self.get_figure_at(x + dx, y + dy)
+                    eated_piece = self.get_figure_at(x + dx, y + dy)
+                    while True:
+                        dx += king_dx
+                        dy += king_dy
+                        if self.get_figure_at(x + dx, y + dy) != 0:
+                            break
+                        moves[(y + dy, x + dx)] = eated_piece
                     break
 
         return moves
