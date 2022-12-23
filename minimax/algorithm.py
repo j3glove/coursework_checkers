@@ -1,29 +1,17 @@
-from .board import *
-from minimax.algorithm import *
+from copy import deepcopy
+from checkers.board import *
+import pygame
 
+RED = (255, 0, 0)
+WHITE = (255, 255, 255)
 
-class Game:
-    def __init__(self, win):
-        self._init()
-        self.win = win
-
-    def update(self):
-        self.board.draw(self.win)
-        self.draw_valid_moves()
-        pygame.display.update()
-
-    def _init(self):
+class Algorithm:
+    def _init(self, board):
         self.selected = None
-        self.board = Board()
+        self.board = board
         self.turn = RED
         self.all_moves = {}
         self.update_moves()
-
-    def winner(self):
-        return self.board.winner()
-
-    def reset(self):
-        self._init()
 
     def select(self, piece_x, piece_y):
         if self.selected:
@@ -38,6 +26,7 @@ class Game:
             return True
 
         return False
+
 
     def _move(self, row, col):
         piece = self.board.get_piece(row, col)
@@ -72,7 +61,7 @@ class Game:
         for y in range(8):
             for x in range(10):
                 piece = self.board.get_figure_at(x, y)
-                if piece and piece.color == self.turn:
+                if piece and piece.color == WHITE:
                     moves = self.board.get_valid_moves(piece)
                     self.all_moves[piece] = moves
                     for move in moves:
@@ -88,12 +77,6 @@ class Game:
                         result[piece][move] = self.all_moves[piece][move]
             self.all_moves = result
 
-    def draw_valid_moves(self):
-        if self.selected:
-            for move in self.all_moves[self.selected]:
-                row, col = move
-                pygame.draw.circle(self.win, GREEN, (col * SQUARE_SIZE + SQUARE_SIZE // 2, row * SQUARE_SIZE + SQUARE_SIZE // 2), 15)
-
     def change_turn(self):
         if self.turn == RED:
             self.turn = WHITE
@@ -102,15 +85,15 @@ class Game:
         self.selected = None
         self.update_moves()
 
-    def minimax(self, position, depth, max_player):
+    def minimax(self, position, depth, max_player, game):
         if depth == 0 or position.winner() != None:
             return position.evaluate(), position
 
         if max_player:
             maxEval = float('-inf')
             best_move = None
-            for move in self.get_all_moves(position, WHITE):
-                evaluation = self.minimax(move, depth - 1, False)[0]
+            for move in self.get_all_moves(position, WHITE, game):
+                evaluation = self.minimax(move, depth - 1, False, game)[0]
                 maxEval = max(maxEval, evaluation)
                 if maxEval == evaluation:
                     best_move = move
@@ -119,35 +102,41 @@ class Game:
         else:
             minEval = float('inf')
             best_move = None
-            for move in self.get_all_moves(position, RED):
-                evaluation = self.minimax(move, depth - 1, True)[0]
+            for move in self.get_all_moves(position, RED, game):
+                evaluation = self.minimax(move, depth - 1, True, game)[0]
                 minEval = min(minEval, evaluation)
                 if minEval == evaluation:
                     best_move = move
 
             return minEval, best_move
 
-    def simulate_move(self, piece, move, board, skip):
+
+    def simulate_move(self, piece, move, board, game, skip):
+        piece1 = board.get_piece(piece.row, piece.col)
+        if piece1 != 0 and piece1.color == self.turn:
+            self.selected = piece1
+        if self.selected:
+            result = self._move(piece1.row, piece1.col)
+            if not result:
+                self.selected = None
+                self.select(piece1.row, piece1.col)
         board.move(piece, move[0], move[1])
         if skip:
             board.remove(skip)
 
         return board
 
-    def get_all_moves(self, board, color):
+
+    def get_all_moves(self, board, color, game):
         moves = []
         for piece in board.get_all_pieces(color):
             valid_moves = board.get_valid_moves(piece)
             for move, skip in valid_moves.items():
                 temp_board = deepcopy(board)
                 temp_piece = temp_board.get_piece(piece.row, piece.col)
-                new_board = self.simulate_move(temp_piece, move, temp_board, skip)
+                new_board = self.simulate_move(temp_piece, move, temp_board, game, skip)
                 moves.append(new_board)
 
         return moves
 
-    def get_board(self):
-        return self.board
 
-    def ai_move(self, board):
-        self.board = board
