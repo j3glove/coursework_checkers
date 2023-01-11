@@ -1,5 +1,6 @@
 from .board import *
 from minimax.algorithm import *
+from copy import deepcopy
 
 
 class Game:
@@ -68,25 +69,7 @@ class Game:
         return True
 
     def update_moves(self):
-        can_kill = False
-        for y in range(8):
-            for x in range(10):
-                piece = self.board.get_figure_at(x, y)
-                if piece and piece.color == self.turn:
-                    moves = self.board.get_valid_moves(piece)
-                    self.all_moves[piece] = moves
-                    for move in moves:
-                        if moves[move]:
-                            can_kill = True
-
-        if can_kill:
-            result = {}
-            for piece in self.all_moves:
-                result[piece] = {}
-                for move in self.all_moves[piece]:
-                    if self.all_moves[piece][move]:
-                        result[piece][move] = self.all_moves[piece][move]
-            self.all_moves = result
+        self.all_moves = self.board.get_bot_moves(self.turn)
 
     def draw_valid_moves(self):
         if self.selected:
@@ -151,3 +134,6 @@ class Game:
 
     def ai_move(self, board):
         self.board = board
+        self.change_turn()
+
+

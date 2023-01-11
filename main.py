@@ -151,9 +151,9 @@ def main():
     while run:
         clock.tick(FPS)
 
-        # if game.turn == WHITE:
-        #     value, new_board = game.minimax(game.get_board(), 4, WHITE)
-        #     game.ai_move(new_board)
+        if game.turn == WHITE:
+            value, new_board = game.minimax(game.get_board(), 1, True)
+            game.ai_move(new_board)
 
         if game.winner() == RED:
             msgBox = QMessageBox()

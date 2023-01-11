@@ -1,6 +1,7 @@
 import pygame
 from .constants import BLACK, ROWS, RED, SQUARE_SIZE, COLS, WHITE
 from .piece import *
+from copy import deepcopy
 
 
 
@@ -57,7 +58,6 @@ class Board:
                         self.board[row].append(0)
                 else:
                     self.board[row].append(0)
-        print(self.board)
 
     def draw(self, win):
         self.draw_squares(win)
@@ -104,6 +104,30 @@ class Board:
             moves.update(self.test_red(piece, piece.col, piece.row))
 
         return moves
+
+    def get_bot_moves(self, turn):
+        can_kill = False
+        all_moves ={}
+        for y in range(8):
+            for x in range(10):
+                piece = self.get_figure_at(x, y)
+                if piece and piece.color == turn:
+                    moves = self.get_valid_moves(piece)
+                    all_moves[piece] = moves
+                    for move in moves:
+                        if moves[move]:
+                            can_kill = True
+
+        if can_kill:
+            result = {}
+            for piece in all_moves:
+                result[piece] = {}
+                for move in all_moves[piece]:
+                    if all_moves[piece][move]:
+                        result[piece][move] = all_moves[piece][move]
+            all_moves = result
+        return all_moves
+
 
     def check_pos_right_bottom(self, piece, piece_x, piece_y):
         moves = {}
