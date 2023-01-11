@@ -2,7 +2,7 @@ import pygame
 from checkers.constants import *
 from checkers.board import *
 from checkers.game import Game
-from minimax.algorithm import Algorithm
+# from minimax.algorithm import Algorithm
 from PyQt6.QtWidgets import QApplication, QMainWindow, QMessageBox
 import sys
 import autorization
@@ -93,7 +93,6 @@ def handle_reg():
 
 def handle_auth():
     user = {"login": auth_ui.input_login.text(), "password": auth_ui.input_password.text()}
-    # nickname = auth_ui.new_login.text()
     if os.path.isfile("cred.json"):
         with open("cred.json", "r", encoding='utf-8') as file:
             users = json.loads(cypher(file.read(), key))

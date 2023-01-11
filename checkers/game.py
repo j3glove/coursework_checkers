@@ -1,5 +1,5 @@
 from .board import *
-from minimax.algorithm import *
+# from minimax.algorithm import *
 from copy import deepcopy
 
 
