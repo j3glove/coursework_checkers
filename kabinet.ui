@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Личный кабинет</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(0, 0, 0)</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="exitkab">
     <property name="geometry">
@@ -24,7 +27,8 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: #5555F5</string>
+     <string notr="true">background-color: #00BFFF
+</string>
     </property>
     <property name="text">
      <string>Выйти</string>
@@ -54,8 +58,11 @@
         <pointsize>26</pointsize>
        </font>
       </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);</string>
+      </property>
       <property name="text">
-       <string>Выберите нужное вам окно</string>
+       <string>Выберите вашего соперника</string>
       </property>
      </widget>
     </widget>
@@ -68,6 +75,11 @@
         <width>161</width>
         <height>61</height>
        </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: #00BFFF;
+border:2px solid #2f6887;
+border-radius: 30;</string>
       </property>
       <property name="text">
        <string>Сыграть против бота</string>
@@ -84,6 +96,11 @@
         <height>61</height>
        </rect>
       </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: #00BFFF;
+border:2px solid #2f6887;
+border-radius: 30;</string>
+      </property>
       <property name="text">
        <string>Сыграть с другом</string>
       </property>
@@ -99,6 +116,11 @@
       <height>31</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: #00BFFF;
+border:2px solid #2f6887;
+border-radius: 30;</string>
+    </property>
     <property name="text">
      <string>Дружесская игра</string>
     </property>
@@ -111,6 +133,11 @@
       <width>161</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: #00BFFF;
+border:2px solid #2f6887;
+border-radius: 30;</string>
     </property>
     <property name="text">
      <string>Игра против бота</string>

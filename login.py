@@ -12,7 +12,8 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_authorization(object):
     def setupUi(self, authorization):
         authorization.setObjectName("authorization")
-        authorization.resize(489, 419)
+        authorization.resize(489, 386)
+        authorization.setStyleSheet("background-color: rgb(0, 0, 0);")
         self.centralwidget = QtWidgets.QWidget(authorization)
         self.centralwidget.setObjectName("centralwidget")
         self.label = QtWidgets.QLabel(self.centralwidget)
@@ -20,24 +21,31 @@ class Ui_authorization(object):
         font = QtGui.QFont()
         font.setPointSize(16)
         self.label.setFont(font)
+        self.label.setStyleSheet("color: rgb(255, 255, 255);")
         self.label.setObjectName("label")
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
         self.label_2.setGeometry(QtCore.QRect(0, 120, 231, 51))
         font = QtGui.QFont()
         font.setPointSize(16)
         self.label_2.setFont(font)
+        self.label_2.setStyleSheet("color: rgb(255, 255, 255);")
         self.label_2.setObjectName("label_2")
         self.loginbtn = QtWidgets.QPushButton(self.centralwidget)
         self.loginbtn.setGeometry(QtCore.QRect(160, 270, 141, 71))
         font = QtGui.QFont()
         font.setPointSize(24)
         self.loginbtn.setFont(font)
+        self.loginbtn.setStyleSheet("background-color: #00BFFF;\n"
+"border:2px solid #2f6887;\n"
+"border-radius: 30;")
         self.loginbtn.setObjectName("loginbtn")
         self.input_login = QtWidgets.QLineEdit(self.centralwidget)
         self.input_login.setGeometry(QtCore.QRect(180, 80, 231, 41))
+        self.input_login.setStyleSheet("color: rgb(255, 255, 255);")
         self.input_login.setObjectName("input_login")
         self.input_password = QtWidgets.QLineEdit(self.centralwidget)
         self.input_password.setGeometry(QtCore.QRect(180, 130, 231, 41))
+        self.input_password.setStyleSheet("color: rgb(255, 255, 255);")
         self.input_password.setObjectName("input_password")
         authorization.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(authorization)
@@ -51,9 +59,6 @@ class Ui_authorization(object):
         self.retranslateUi(authorization)
         QtCore.QMetaObject.connectSlotsByName(authorization)
 
-    def gettext(self):
-        return self.input_login.text()
-
     def retranslateUi(self, authorization):
         _translate = QtCore.QCoreApplication.translate
         authorization.setWindowTitle(_translate("authorization", "Окно авторизации"))
@@ -62,3 +67,11 @@ class Ui_authorization(object):
         self.loginbtn.setText(_translate("authorization", "OK"))
 
 
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    authorization = QtWidgets.QMainWindow()
+    ui = Ui_authorization()
+    ui.setupUi(authorization)
+    authorization.show()
+    sys.exit(app.exec())

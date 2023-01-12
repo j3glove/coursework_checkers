@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Окно авторизации</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(0, 0, 0);</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QLabel" name="label">
     <property name="geometry">
@@ -27,6 +30,9 @@
      <font>
       <pointsize>16</pointsize>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);</string>
     </property>
     <property name="text">
      <string>Введите логин:</string>
@@ -46,6 +52,9 @@
       <pointsize>16</pointsize>
      </font>
     </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);</string>
+    </property>
     <property name="text">
      <string>Введите пароль:</string>
     </property>
@@ -64,6 +73,11 @@
       <pointsize>24</pointsize>
      </font>
     </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: #00BFFF;
+border:2px solid #2f6887;
+border-radius: 30;</string>
+    </property>
     <property name="text">
      <string>OK</string>
     </property>
@@ -77,6 +91,9 @@
       <height>41</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);</string>
+    </property>
    </widget>
    <widget class="QLineEdit" name="input_password">
     <property name="geometry">
@@ -86,6 +103,9 @@
       <width>231</width>
       <height>41</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);</string>
     </property>
    </widget>
   </widget>

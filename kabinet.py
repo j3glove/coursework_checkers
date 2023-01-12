@@ -13,11 +13,13 @@ class Ui_kabinet(object):
     def setupUi(self, kabinet):
         kabinet.setObjectName("kabinet")
         kabinet.resize(611, 481)
+        kabinet.setStyleSheet("background-color: rgb(0, 0, 0)")
         self.centralwidget = QtWidgets.QWidget(kabinet)
         self.centralwidget.setObjectName("centralwidget")
         self.exitkab = QtWidgets.QPushButton(self.centralwidget)
         self.exitkab.setGeometry(QtCore.QRect(10, 10, 75, 23))
-        self.exitkab.setStyleSheet("background-color: #5555F5")
+        self.exitkab.setStyleSheet("background-color: #00BFFF\n"
+"")
         self.exitkab.setObjectName("exitkab")
         self.stackedWidget = QtWidgets.QStackedWidget(self.centralwidget)
         self.stackedWidget.setGeometry(QtCore.QRect(30, 60, 581, 341))
@@ -29,25 +31,38 @@ class Ui_kabinet(object):
         font = QtGui.QFont()
         font.setPointSize(26)
         self.labelkab.setFont(font)
+        self.labelkab.setStyleSheet("color: rgb(255, 255, 255);")
         self.labelkab.setObjectName("labelkab")
         self.stackedWidget.addWidget(self.home)
         self.stats_window = QtWidgets.QWidget()
         self.stats_window.setObjectName("stats_window")
         self.pushButton = QtWidgets.QPushButton(self.stats_window)
         self.pushButton.setGeometry(QtCore.QRect(200, 140, 161, 61))
+        self.pushButton.setStyleSheet("background-color: #00BFFF;\n"
+"border:2px solid #2f6887;\n"
+"border-radius: 30;")
         self.pushButton.setObjectName("pushButton")
         self.stackedWidget.addWidget(self.stats_window)
         self.play_window = QtWidgets.QWidget()
         self.play_window.setObjectName("play_window")
         self.play_btn = QtWidgets.QPushButton(self.play_window)
         self.play_btn.setGeometry(QtCore.QRect(200, 140, 161, 61))
+        self.play_btn.setStyleSheet("background-color: #00BFFF;\n"
+"border:2px solid #2f6887;\n"
+"border-radius: 30;")
         self.play_btn.setObjectName("play_btn")
         self.stackedWidget.addWidget(self.play_window)
         self.kabplay = QtWidgets.QPushButton(self.centralwidget)
         self.kabplay.setGeometry(QtCore.QRect(70, 400, 161, 31))
+        self.kabplay.setStyleSheet("background-color: #00BFFF;\n"
+"border:2px solid #2f6887;\n"
+"border-radius: 30;")
         self.kabplay.setObjectName("kabplay")
         self.kabstats = QtWidgets.QPushButton(self.centralwidget)
         self.kabstats.setGeometry(QtCore.QRect(370, 400, 161, 31))
+        self.kabstats.setStyleSheet("background-color: #00BFFF;\n"
+"border:2px solid #2f6887;\n"
+"border-radius: 30;")
         self.kabstats.setObjectName("kabstats")
         kabinet.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(kabinet)
@@ -65,7 +80,7 @@ class Ui_kabinet(object):
         _translate = QtCore.QCoreApplication.translate
         kabinet.setWindowTitle(_translate("kabinet", "Личный кабинет"))
         self.exitkab.setText(_translate("kabinet", "Выйти"))
-        self.labelkab.setText(_translate("kabinet", "Выберите нужное вам окно"))
+        self.labelkab.setText(_translate("kabinet", "Выберите вашего соперника"))
         self.pushButton.setText(_translate("kabinet", "Сыграть против бота"))
         self.play_btn.setText(_translate("kabinet", "Сыграть с другом"))
         self.kabplay.setText(_translate("kabinet", "Дружесская игра"))
