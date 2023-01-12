@@ -1,5 +1,4 @@
-from .board import *
-# from minimax.algorithm import *
+from checkers.board import *
 from copy import deepcopy
 
 
@@ -117,15 +116,50 @@ class Game:
 
         return board
 
+    def continue_kill(self, board, piece):
+        positions = []
+        moves = board.get_valid_moves(piece)
+        kill_moves = {}
+        for temp_piece, skip in moves.items():
+            if skip != 0:
+                kill_moves[temp_piece] = skip
+        if len(kill_moves) == 0:
+            return [board, ]
+        for move, skip in kill_moves.items():
+            temp_board = deepcopy(board)
+            temp_piece = temp_board.get_piece(piece.row, piece.col)
+            new_board = self.simulate_move(temp_piece, move, temp_board, skip)
+            positions.extend(self.continue_kill(new_board, new_board.get_piece(move[0], move[1])))
+        return positions
+
+
+
     def get_all_moves(self, board, color):
         moves = []
+        all_moves = board.get_bot_moves(color)
         for piece in board.get_all_pieces(color):
-            valid_moves = board.get_valid_moves(piece)
+            valid_moves = all_moves[piece]
             for move, skip in valid_moves.items():
                 temp_board = deepcopy(board)
                 temp_piece = temp_board.get_piece(piece.row, piece.col)
                 new_board = self.simulate_move(temp_piece, move, temp_board, skip)
-                moves.append(new_board)
+                if skip == 0:
+                    moves.append(new_board)
+                else:
+                    moves.extend(self.continue_kill(new_board, new_board.get_piece(move[0], move[1])))
+                # moves.append(new_board)
+                # while True:
+                #     all_moves = new_board.get_piece(move[0], move[1])
+                #     kill_moves = {}
+                #     for temp_piece, skip in all_moves.items():
+                #         if skip != 0:
+                #             kill_moves[piece] = skip
+                #     if len(kill_moves) == 0:
+                #         moves.append(new_board)
+                #         break
+                #     else:
+
+
 
         return moves
 

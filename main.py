@@ -1,8 +1,5 @@
-import pygame
-from checkers.constants import *
 from checkers.board import *
 from checkers.game import Game
-# from minimax.algorithm import Algorithm
 from PyQt6.QtWidgets import QApplication, QMainWindow, QMessageBox
 import sys
 import autorization
@@ -115,7 +112,8 @@ def open_kab():
     kab_ui.setupUi(kab_window)
     kab_ui.kabplay.clicked.connect(show_play)
     kab_ui.kabstats.clicked.connect(show_stats)
-    kab_ui.play_btn.clicked.connect(opengame)
+    kab_ui.play_btn.clicked.connect(lambda: opengame(False))
+    kab_ui.pushButton.clicked.connect(lambda: opengame(True))
     kab_ui.exitkab.clicked.connect(exit_click)
     kab_window.show()
 
@@ -136,11 +134,11 @@ def exit_click():
 open_main()
 
 
-def opengame():
+def opengame(AI):
     kab_window.hide()
-    main()
+    main(AI)
 
-def main():
+def main(AI):
     WIN = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption('80-клеточные Русские Шашки - поддавки')
     run = True
@@ -150,8 +148,8 @@ def main():
     while run:
         clock.tick(FPS)
 
-        if game.turn == WHITE:
-            value, new_board = game.minimax(game.get_board(), 1, True)
+        if game.turn == WHITE and AI:
+            value, new_board = game.minimax(game.get_board(), 3, True)
             game.ai_move(new_board)
 
         if game.winner() == RED:

@@ -33,6 +33,9 @@ class Ui_kabinet(object):
         self.stackedWidget.addWidget(self.home)
         self.stats_window = QtWidgets.QWidget()
         self.stats_window.setObjectName("stats_window")
+        self.pushButton = QtWidgets.QPushButton(self.stats_window)
+        self.pushButton.setGeometry(QtCore.QRect(200, 140, 161, 61))
+        self.pushButton.setObjectName("pushButton")
         self.stackedWidget.addWidget(self.stats_window)
         self.play_window = QtWidgets.QWidget()
         self.play_window.setObjectName("play_window")
@@ -63,9 +66,10 @@ class Ui_kabinet(object):
         kabinet.setWindowTitle(_translate("kabinet", "Личный кабинет"))
         self.exitkab.setText(_translate("kabinet", "Выйти"))
         self.labelkab.setText(_translate("kabinet", "Выберите нужное вам окно"))
-        self.play_btn.setText(_translate("kabinet", "Сыграть"))
-        self.kabplay.setText(_translate("kabinet", "Окно партии"))
-        self.kabstats.setText(_translate("kabinet", "Окно статистики"))
+        self.pushButton.setText(_translate("kabinet", "Сыграть против бота"))
+        self.play_btn.setText(_translate("kabinet", "Сыграть с другом"))
+        self.kabplay.setText(_translate("kabinet", "Дружесская игра"))
+        self.kabstats.setText(_translate("kabinet", "Игра против бота"))
 
 
 if __name__ == "__main__":

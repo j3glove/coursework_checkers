@@ -1,7 +1,4 @@
-import pygame
-from .constants import BLACK, ROWS, RED, SQUARE_SIZE, COLS, WHITE
-from .piece import *
-from copy import deepcopy
+from checkers.piece import *
 
 
 
@@ -15,12 +12,13 @@ class Board:
     def draw_squares(self, win):
         win.fill(BLACK)
         for row in range(ROWS):
-            for col in range(row % 2, COLS, 2):
-                pygame.draw.rect(win, RED, (row * SQUARE_SIZE, col * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
+            for col in range(COLS):
+                if (row + col)%2 == 0:
+                    pygame.draw.rect(win, RED, (col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
 
     def evaluate(self):
         ves_pos = self.white_left - self.red_left + (self.white_kings * 5 - self.red_kings * 5)
-        evalpos = ves_pos
+        evalpos = -ves_pos
         return evalpos
 
     def get_all_pieces(self, color):
@@ -35,7 +33,7 @@ class Board:
         self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], self.board[piece.row][piece.col]
         piece.move(row, col)
 
-        if row == ROWS - 3 and piece.color == WHITE or row == 0 and piece.color == RED:
+        if row == ROWS  and piece.color == WHITE or row == 0 and piece.color == RED:
             piece.make_king()
             if piece.color == WHITE:
                 self.white_kings += 1
@@ -104,6 +102,7 @@ class Board:
             moves.update(self.test_red(piece, piece.col, piece.row))
 
         return moves
+
 
     def get_bot_moves(self, turn):
         can_kill = False

@@ -59,7 +59,21 @@
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="stats_window"/>
+    <widget class="QWidget" name="stats_window">
+     <widget class="QPushButton" name="pushButton">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>140</y>
+        <width>161</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Сыграть против бота</string>
+      </property>
+     </widget>
+    </widget>
     <widget class="QWidget" name="play_window">
      <widget class="QPushButton" name="play_btn">
       <property name="geometry">
@@ -71,7 +85,7 @@
        </rect>
       </property>
       <property name="text">
-       <string>Сыграть</string>
+       <string>Сыграть с другом</string>
       </property>
      </widget>
     </widget>
@@ -86,7 +100,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Окно партии</string>
+     <string>Дружесская игра</string>
     </property>
    </widget>
    <widget class="QPushButton" name="kabstats">
@@ -99,7 +113,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Окно статистики</string>
+     <string>Игра против бота</string>
     </property>
    </widget>
   </widget>
