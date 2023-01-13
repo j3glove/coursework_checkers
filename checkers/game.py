@@ -147,17 +147,7 @@ class Game:
                     moves.append(new_board)
                 else:
                     moves.extend(self.continue_kill(new_board, new_board.get_piece(move[0], move[1])))
-                # moves.append(new_board)
-                # while True:
-                #     all_moves = new_board.get_piece(move[0], move[1])
-                #     kill_moves = {}
-                #     for temp_piece, skip in all_moves.items():
-                #         if skip != 0:
-                #             kill_moves[piece] = skip
-                #     if len(kill_moves) == 0:
-                #         moves.append(new_board)
-                #         break
-                #     else:
+
 
 
 
