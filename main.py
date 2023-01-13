@@ -159,11 +159,11 @@ def main(AI):
             msgBox.exec()
             run = False
         if game.winner() == WHITE:
+            run = False
             msgBox = QMessageBox()
             msgBox.setWindowTitle("Окончание партии")
             msgBox.setText("Игра окончена: Победа белых")
             msgBox.exec()
-            run = False
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
