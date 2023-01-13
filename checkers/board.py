@@ -97,12 +97,10 @@ class Board:
         moves.update(self.check_pos_left_bottom(piece, piece.col, piece.row))
         moves.update(self.check_pos_right_bottom(piece, piece.col, piece.row))
 
-
         if piece.king:
             moves.update(self.test_red(piece, piece.col, piece.row))
 
         return moves
-
 
     def get_bot_moves(self, turn):
         can_kill = False
@@ -126,7 +124,6 @@ class Board:
                         result[piece][move] = all_moves[piece][move]
             all_moves = result
         return all_moves
-
 
     def check_pos_right_bottom(self, piece, piece_x, piece_y):
         moves = {}
