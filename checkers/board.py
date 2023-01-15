@@ -17,7 +17,12 @@ class Board:
                     pygame.draw.rect(win, RED, (col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
 
     def evaluate(self):
-        ves_pos = self.white_left - self.red_left + (self.white_kings * 5 - self.red_kings * 5)
+        k=5
+        if self.white_kings == 1 and self.red_left == 1 and self.white_left == 0:
+            k = 0.1
+        elif self.red_kings == 1 and self.white_left == 1 and self.red_left == 0:
+            k = 0.1
+        ves_pos = self.white_left - self.red_left + (self.white_kings * k - self.red_kings * k)
         evalpos = -ves_pos
         return evalpos
 
