@@ -73,11 +73,10 @@ def handle_reg():
         else:
             users = []
         if user in users:
-            if nickname in users:
-                msgBox = QMessageBox()
-                msgBox.setWindowTitle("Ошибка")
-                msgBox.setText("Такой аккаунт уже зарегестрирован")
-                msgBox.exec()
+            msgBox = QMessageBox()
+            msgBox.setWindowTitle("Ошибка")
+            msgBox.setText("Такой аккаунт уже зарегестрирован")
+            msgBox.exec()
         else:
             with open('stats.txt', 'a') as f:
                 f.write(nickname + ": 0 Wins\n")
