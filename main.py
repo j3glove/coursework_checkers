@@ -149,7 +149,7 @@ def main(AI):
         clock.tick(FPS)
 
         if game.turn == WHITE and AI:
-            value, new_board = game.minimax(game.get_board(), 3, True)
+            value, new_board = game.minimax(game.get_board(), 4, True)
             game.ai_move(new_board)
 
         if game.winner() == RED:
