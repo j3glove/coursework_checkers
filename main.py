@@ -152,11 +152,12 @@ def main(AI):
             game.ai_move(new_board)
 
         if game.winner() == RED:
+            run = False
             msgBox = QMessageBox()
             msgBox.setWindowTitle("Окончание партии")
             msgBox.setText("Игра окончена: Победа красных")
             msgBox.exec()
-            run = False
+
         if game.winner() == WHITE:
             run = False
             msgBox = QMessageBox()
