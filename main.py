@@ -83,8 +83,6 @@ def handle_reg():
             msgBox.setText("Такой аккаунт уже зарегестрирован")
             msgBox.exec()
         else:
-            with open('stats.txt', 'a') as f:
-                f.write(nickname + ": 0 Wins\n")
             with open("cred.json", "w", encoding='utf-8') as file:
                 users.append(user)
                 file.write(cypher(json.dumps(users), key))
