@@ -66,6 +66,11 @@ def handle_reg():
         msgBox.setWindowTitle("Ошибка")
         msgBox.setText("Длина никнейма превысила 12 символов")
         msgBox.exec()
+    elif len(nickname) == 0:
+        msgBox = QMessageBox()
+        msgBox.setWindowTitle("Ошибка")
+        msgBox.setText("Ничего не введено")
+        msgBox.exec()
     else:
         if os.path.isfile("cred.json"):
             with open("cred.json", "r", encoding='utf-8') as file:
